@@ -79,21 +79,58 @@ module.exports = {
       return response;
     }
   },
-  getAllBooks: () => {
+  getAllBooks: (req) => {
+    const { name, reading, finished } = req.query;
     let filteredBooks = [];
 
-    books.forEach((book) => {
-      let finalBook = {};
-      finalBook.id = book.id;
-      finalBook.name = book.name;
-      finalBook.publisher = book.publisher;
+    let finalBook = {};
 
-      filteredBooks.push(finalBook);
-    });
+    if (name) {
+      finalBook = books.filter(
+        (book) => book.name.toLowerCase() == name.toLowerCase().slice(1, -1)
+      );
+
+      // let finalBook = {};
+      // finalBook.id = book.id;
+      // finalBook.name = book.name;
+      // finalBook.publisher = book.publisher;
+    }
+    if (reading) {
+      finalBook = books.filter((book) => book.reading == reading);
+      // let finalBook = {};
+      // finalBook.id = book.id;
+      // finalBook.name = book.name;
+      // finalBook.publisher = book.publisher;
+    }
+    if (finished) {
+      finalBook = books.filter((book) => book.finished == finished);
+      // let finalBook = {};
+      // finalBook.id = book.id;
+      // finalBook.name = book.name;
+      // finalBook.publisher = book.publisher;
+    }
+
+    if (!name && !reading && !finished) {
+      books.forEach((book) => {
+        let finalBook = {};
+        finalBook.id = book.id;
+        finalBook.name = book.name;
+        finalBook.publisher = book.publisher;
+
+        filteredBooks.push(finalBook);
+      });
+      return {
+        status: "success",
+        data: {
+          books: filteredBooks,
+        },
+      };
+    }
+
     return {
       status: "success",
       data: {
-        books: filteredBooks,
+        books: finalBook,
       },
     };
   },
