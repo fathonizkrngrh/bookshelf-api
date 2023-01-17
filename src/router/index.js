@@ -1,16 +1,16 @@
 const {
-  addNote,
-  getAllNotes,
-  getNoteById,
-  editNote,
-  deleteNote,
+  addBook,
+  getAllBooks,
+  getBookById,
+  editBook,
+  deleteBook,
 } = require("../controller/controller");
 
 const routes = [
   {
     method: "POST",
-    path: "/notes",
-    handler: addNote,
+    path: "/books",
+    handler: addBook,
     options: {
       cors: {
         origin: ["*"],
@@ -19,23 +19,23 @@ const routes = [
   },
   {
     method: "GET",
-    path: "/notes",
-    handler: getAllNotes,
+    path: "/books",
+    handler: getAllBooks,
   },
   {
     method: "GET",
-    path: "/notes/{id}",
-    handler: getNoteById,
+    path: "/books/{id}",
+    handler: getBookById,
   },
   {
     method: "PUT",
-    path: "/notes/{id}",
-    handler: editNote,
+    path: "/books/{id}",
+    handler: editBook,
   },
   {
     method: "DELETE",
-    path: "/notes/{id}",
-    handler: deleteNote,
+    path: "/books/{id}",
+    handler: deleteBook,
   },
 ];
 
