@@ -1,4 +1,5 @@
 const {
+  home,
   addBook,
   getAllBooks,
   getBookById,
@@ -7,6 +8,11 @@ const {
 } = require("../controller/controller");
 
 const routes = [
+  {
+    method: "GET",
+    path: "/",
+    handler: home,
+  },
   {
     method: "POST",
     path: "/books",

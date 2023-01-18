@@ -3,6 +3,14 @@ const { nanoid } = require("nanoid");
 const { StatusCodes: status } = require("http-status-codes");
 
 module.exports = {
+  home: (h) => {
+    const response = h.response({
+      status: "success",
+      message: "Welcome to bookshelf api",
+    });
+    response.code(status.OK);
+    return response;
+  },
   addBook: (req, h) => {
     try {
       const {
@@ -87,27 +95,45 @@ module.exports = {
 
     if (name) {
       finalBook = books.filter(
-        (book) => book.name.toLowerCase() == name.toLowerCase().slice(1, -1)
+        (book) =>
+          JSON.stringify(book.name)
+            .toLowerCase()
+            .indexOf(name.toLowerCase()) !== -1
       );
+      finalBook.forEach((book) => {
+        let bookshelf = {};
+        bookshelf.id = book.id;
+        bookshelf.name = book.name;
+        bookshelf.publisher = book.publisher;
 
-      // let finalBook = {};
+        filteredBooks.push(bookshelf);
+      });
+
       // finalBook.id = book.id;
       // finalBook.name = book.name;
       // finalBook.publisher = book.publisher;
     }
     if (reading) {
       finalBook = books.filter((book) => book.reading == reading);
-      // let finalBook = {};
-      // finalBook.id = book.id;
-      // finalBook.name = book.name;
-      // finalBook.publisher = book.publisher;
+      finalBook.forEach((book) => {
+        let bookshelf = {};
+        bookshelf.id = book.id;
+        bookshelf.name = book.name;
+        bookshelf.publisher = book.publisher;
+
+        filteredBooks.push(bookshelf);
+      });
     }
     if (finished) {
       finalBook = books.filter((book) => book.finished == finished);
-      // let finalBook = {};
-      // finalBook.id = book.id;
-      // finalBook.name = book.name;
-      // finalBook.publisher = book.publisher;
+      finalBook.forEach((book) => {
+        let bookshelf = {};
+        bookshelf.id = book.id;
+        bookshelf.name = book.name;
+        bookshelf.publisher = book.publisher;
+
+        filteredBooks.push(bookshelf);
+      });
     }
 
     if (!name && !reading && !finished) {
@@ -130,7 +156,7 @@ module.exports = {
     return {
       status: "success",
       data: {
-        books: finalBook,
+        books: filteredBooks,
       },
     };
   },
@@ -168,7 +194,7 @@ module.exports = {
     if (!name) {
       const response = h.response({
         status: "fail",
-        message: "Gagal menambahkan buku. Mohon isi nama buku",
+        message: "Gagal memperbarui buku. Mohon isi nama buku",
       });
       response.code(status.BAD_REQUEST);
       return response;
@@ -178,7 +204,7 @@ module.exports = {
       const response = h.response({
         status: "fail",
         message:
-          "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
+          "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount",
       });
       response.code(status.BAD_REQUEST);
       return response;
